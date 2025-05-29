@@ -3,108 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Singapore Nutri-Grade Calculator for Beverages</title>
+    <title>Nutri-Grade Calculator (Singapore)</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Nutri-Grade Calculator</h1>
-        <p class="subtitle">For Freshly Prepared Beverages</p>
+        <h1>Singapore Nutri-Grade Calculator</h1>
+        <p class="subtitle">Calculate the Nutri-Grade for Freshly Prepared Beverages</p>
 
         <div class="calculator-section">
-            <h2>Beverage Details</h2>
+            <h2>Beverage Ingredients</h2>
             <div class="input-group">
-                <label for="sugarInput">Total Sugar (grams):</label>
-                <input type="number" id="sugarInput" min="0" step="0.1" placeholder="e.g., 5.5">
+                <label for="sugarInput">Total Sugar (g):</label>
+                <input type="number" id="sugarInput" placeholder="e.g., 5.5" min="0" step="0.1" value="0">
             </div>
             <div class="input-group">
-                <label for="satFatInput">Saturated Fat (grams):</label>
-                <input type="number" id="satFatInput" min="0" step="0.1" placeholder="e.g., 1.2">
+                <label for="satFatInput">Total Saturated Fat (g):</label>
+                <input type="number" id="satFatInput" placeholder="e.g., 1.2" min="0" step="0.1" value="0">
             </div>
             <div class="input-group">
                 <label for="volumeInput">Beverage Volume (ml):</label>
-                <input type="number" id="volumeInput" min="1" step="1" placeholder="e.g., 250">
+                <input type="number" id="volumeInput" placeholder="e.g., 250" min="1" step="1" value="250">
+            </div>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+
+            <h2>Nutritional Information Panel Inputs (Total for Beverage Volume)</h2>
+            <p class="explanation-text" style="text-align: center; margin-bottom: 20px;">
+                Enter the total amounts of these nutrients for the volume specified above.
+            </p>
+            <div class="input-group">
+                <label for="energyInput">Total Energy (kcal):</label>
+                <input type="number" id="energyInput" placeholder="e.g., 120" min="0" step="0.1" value="0">
             </div>
             <div class="input-group">
-                <label for="hasSweetener">Contains Sweetener (other than natural sugar)?</label>
+                <label for="proteinInput">Total Protein (g):</label>
+                <input type="number" id="proteinInput" placeholder="e.g., 5" min="0" step="0.1" value="0">
+            </div>
+            <div class="input-group">
+                <label for="totalFatInput">Total Fat (g):</label>
+                <input type="number" id="totalFatInput" placeholder="e.g., 8" min="0" step="0.1" value="0">
+            </div>
+            <div class="input-group">
+                <label for="transFatInput">Trans Fat (g):</label>
+                <input type="number" id="transFatInput" placeholder="e.g., 0" min="0" step="0.1" value="0">
+            </div>
+            <div class="input-group">
+                <label for="carbInput">Total Carbohydrate (g):</label>
+                <input type="number" id="carbInput" placeholder="e.g., 20" min="0" step="0.1" value="0">
+            </div>
+            <div class="input-group">
+                <label for="fibreInput">Dietary Fibre (g):</label>
+                <input type="number" id="fibreInput" placeholder="e.g., 2" min="0" step="0.1" value="0">
+            </div>
+            <div class="input-group">
+                <label for="sodiumInput">Sodium (mg):</label>
+                <input type="number" id="sodiumInput" placeholder="e.g., 30" min="0" step="0.1" value="0">
+            </div>
+
+            <div class="input-group checkbox-group">
                 <input type="checkbox" id="hasSweetener">
+                <label for="hasSweetener">Contains Sweetener (e.g., sugar, sucralose, aspartame etc.)</label>
             </div>
             <button id="calculateBtn">Calculate Nutri-Grade</button>
         </div>
 
         <div class="result-section">
             <h2>Nutri-Grade Result</h2>
-            <div id="nutriGradeOutput" class="nutri-grade-box">
-                <div class="grade-letter">?</div>
-                <div class="sugar-percentage">?% Sugar</div>
+            <div id="nutriGradeOutput" class="nutri-grade-box grade-C">
+                <span class="grade-letter">C</span>
+                <span class="sugar-percentage">5% Sugar</span>
             </div>
-            <p id="gradeExplanation" class="explanation-text"></p>
+            <p id="gradeExplanation" class="explanation-text">Enter values and click "Calculate" to see the Nutri-Grade.</p>
         </div>
 
-        <div class="nip-section" id="nipSection">
-            <h2>Nutritional Information Panel (NIP)</h2>
-            <div class="nip-panel" id="nipPanel">
-                <p class="nip-title">NUTRITION INFORMATION</p>
-                <p class="nip-serving">Per 100ml Serving</p>
+        <div id="nipSection" class="nip-section">
+            <h2>Nutritional Information Panel <br>(Per 100ml Serving)</h2>
+            <div id="nipPanel" class="nip-panel">
+                <div class="nip-title">NUTRITION INFORMATION</div>
+                <div class="nip-serving">Per 100ml Serving</div>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Nutrient</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
                     <tbody>
-                        <tr>
-                            <td>Energy</td>
-                            <td id="nipEnergy">-- kcal</td>
-                        </tr>
-                        <tr>
-                            <td>Protein</td>
-                            <td id="nipProtein">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>Total Fat</td>
-                            <td id="nipTotalFat">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Saturated Fat</td>
-                            <td id="nipSatFat">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Trans Fat</td>
-                            <td id="nipTransFat">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>Carbohydrate</td>
-                            <td id="nipCarbohydrate">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Total Sugar</td>
-                            <td id="nipTotalSugar">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>Dietary Fibre</td>
-                            <td id="nipFibre">-- g</td>
-                        </tr>
-                        <tr>
-                            <td>Sodium</td>
-                            <td id="nipSodium">-- mg</td>
-                        </tr>
+                        <tr><th>Energy</th> <td id="nipEnergy">0 kcal</td></tr>
+                        <tr><th>Protein</th> <td id="nipProtein">0 g</td></tr>
+                        <tr><th>Total Fat</th> <td id="nipTotalFat">0 g</td></tr>
+                        <tr><td style="padding-left: 20px;">Saturated Fat</td> <td id="nipSatFat">0 g</td></tr>
+                        <tr><td style="padding-left: 20px;">Trans Fat</td> <td id="nipTransFat">0 g</td></tr>
+                        <tr><th>Carbohydrate</th> <td id="nipCarbohydrate">0 g</td></tr>
+                        <tr><td style="padding-left: 20px;">Total Sugar</td> <td id="nipTotalSugar">0 g</td></tr>
+                        <tr><th>Dietary Fibre</th> <td id="nipFibre">0 g</td></tr>
+                        <tr><th>Sodium</th> <td id="nipSodium">0 mg</td></tr>
                     </tbody>
                 </table>
-                <p class="nip-disclaimer">
-                    *Nutri-Grade is based on the default preparation of this beverage.<br>
-                    Values are calculated estimates based on input and should be verified for official labelling.
-                </p>
+                <div class="nip-disclaimer">
+                    Nutritional values are based on user inputs.
+                </div>
             </div>
             <button id="exportNIPImage">Export NIP as Image</button>
             <button id="printNIP">Print NIP</button>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
