@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const grades = ['A', 'B', 'C', 'D'];
         const gradeIndexSugar = grades.indexOf(sugarGrade);
         const gradeIndexSatFat = grades.indexOf(satFatGrade);
-        
+
         // If sweetener is present and sugar grade is A, it defaults to B
         if (containsSweetener && sugarGrade === 'A') {
              nutriGrade = 'B';
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // The "worst" (highest index) grade determines the overall Nutri-Grade
             const finalGradeIndex = Math.max(gradeIndexSugar, gradeIndexSatFat);
             nutriGrade = grades[finalGradeIndex];
-            
+
             // Explanation based on the determining factor
             if (gradeIndexSugar > gradeIndexSatFat) {
                 explanation = `Grade is determined by sugar content (${sugarGrade}).`;
@@ -165,4 +165,20 @@ document.addEventListener('DOMContentLoaded', () => {
             body { font-family: 'Roboto', sans-serif; margin: 20px; color: #333; }
             .nip-panel { border: 2px solid #90caf9; padding: 20px; border-radius: 8px; background-color: #ffffff; box-shadow: none; margin: 0 auto; width: 100%; max-width: 500px; }
             .nip-title { font-weight: bold; font-size: 1.4em; text-align: center; margin-bottom: 5px; color: #1976d2; }
-            .nip-serving { font-size:
+            .nip-serving { font-size: 0.9em; text-align: center; margin-bottom: 15px; color: #64b5f6; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+            th, td { border-bottom: 1px solid #e0e0e0; padding: 10px 0; text-align: left; }
+            th { font-weight: bold; color: #3f51b5; }
+            td { color: #555; }
+            .nip-disclaimer { font-size: 0.8em; color: #777; text-align: center; margin-top: 15px; }
+        `); // Corrected closing of the backtick string and style tag
+        printWindow.document.write('</style></head><body>');
+        printWindow.document.write('<div class="nip-panel">'); // Use the same class for styling
+        printWindow.document.write(nipPanel.innerHTML); // Copy the content of the existing NIP
+        printWindow.document.write('</div></body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    });
+
+}); // Closing for DOMContentLoaded
