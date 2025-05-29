@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore Nutri-Grade Sugar Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            min-width: 200px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .results.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .grade-a { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .grade-b { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .grade-c { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .grade-d { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+
+        .grade-display {
+            font-size: 4em;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .grade-description {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .sugar-info {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+
+        .sugar-info h3 {
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .nutri-grade-info {
+            background: #34495e;
+            color: white;
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+
+        .nutri-grade-info h3 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #ecf0f1;
+        }
+
+        .grade-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .grade-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .grade-item.a { background: #2ecc71; }
+        .grade-item.b { background: #f39c12; }
+        .grade-item.c { background: #e74c3c; }
+        .grade-item.d { background: #8e44ad; }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .grade-table {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .grade-display {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥤 Nutri-Grade Calculator</h1>
+            <p>Calculate sugar content grades for beverages in Singapore</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="sugarContent">Sugar Content (g per 100ml):</label>
+                    <input type="number" id="sugarContent" step="0.1" min="0" placeholder="e.g., 10.5">
+                </div>
+
+                <div class="input-group">
+                    <label for="beverageName">Beverage Name (optional):</label>
+                    <input type="text" id="beverageName" placeholder="e.g., Orange Juice">
+                </div>
+
+                <div class="input-group">
+                    <label for="servingSize">Serving Size (ml, optional):</label>
+                    <input type="number" id="servingSize" min="1" placeholder="e.g., 330">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateGrade()">Calculate Nutri-Grade</button>
+            </div>
+
+            <div id="results" class="results">
+                <!-- Results will be populated here -->
+            </div>
+
+            <div class="nutri-grade-info">
+                <h3>Singapore Nutri-Grade System</h3>
+                <p>The Nutri-Grade labelling system helps consumers make healthier choices by grading beverages based on sugar and saturated fat content.</p>
+                
+                <div class="grade-table">
+                    <div class="grade-item a">
+                        <div>Grade A</div>
+                        <small>≤ 1g sugar/100ml</small>
+                    </div>
+                    <div class="grade-item b">
+                        <div>Grade B</div>
+                        <small>1.1-5g sugar/100ml</small>
+                    </div>
+                    <div class="grade-item c">
+                        <div>Grade C</div>
+                        <small>5.1-10g sugar/100ml</small>
+                    </div>
+                    <div class="grade-item d">
+                        <div>Grade D</div>
+                        <small>&gt; 10g sugar/100ml</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateGrade() {
+            const sugarContent = parseFloat(document.getElementById('sugarContent').value);
+            const beverageName = document.getElementById('beverageName').value || 'Your beverage';
+            const servingSize = parseFloat(document.getElementById('servingSize').value);
+            
+            if (isNaN(sugarContent) || sugarContent < 0) {
+                alert('Please enter a valid sugar content (0 or higher)');
+                return;
+            }
+
+            let grade, gradeClass, description;
+            
+            if (sugarContent <= 1) {
+                grade = 'A';
+                gradeClass = 'grade-a';
+                description = 'Healthiest Choice - Low Sugar';
+            } else if (sugarContent <= 5) {
+                grade = 'B';
+                gradeClass = 'grade-b';
+                description = 'Healthier Choice - Medium-Low Sugar';
+            } else if (sugarContent <= 10) {
+                grade = 'C';
+                gradeClass = 'grade-c';
+                description = 'Medium Sugar Content';
+            } else {
+                grade = 'D';
+                gradeClass = 'grade-d';
+                description = 'High Sugar Content';
+            }
+
+            const resultsDiv = document.getElementById('results');
+            
+            let servingInfo = '';
+            if (!isNaN(servingSize) && servingSize > 0) {
+                const totalSugar = (sugarContent * servingSize / 100).toFixed(1);
+                servingInfo = `
+                    <div class="info-item">
+                        <strong>Total Sugar per Serving:</strong>
+                        ${totalSugar}g (${servingSize}ml serving)
+                    </div>
+                `;
+            }
+
+            resultsDiv.className = `results ${gradeClass}`;
+            resultsDiv.innerHTML = `
+                <div class="grade-display">Grade ${grade}</div>
+                <div class="grade-description">${description}</div>
+                <div class="sugar-info">
+                    <h3>${beverageName}</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Sugar Content:</strong>
+                            ${sugarContent}g per 100ml
+                        </div>
+                        ${servingInfo}
+                        <div class="info-item">
+                            <strong>Grade Range:</strong>
+                            ${getGradeRange(grade)}
+                        </div>
+                        <div class="info-item">
+                            <strong>Recommendation:</strong>
+                            ${getRecommendation(grade)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                resultsDiv.classList.add('show');
+            }, 100);
+        }
+
+        function getGradeRange(grade) {
+            switch(grade) {
+                case 'A': return '≤ 1g per 100ml';
+                case 'B': return '1.1-5g per 100ml';
+                case 'C': return '5.1-10g per 100ml';
+                case 'D': return '> 10g per 100ml';
+                default: return '';
+            }
+        }
+
+        function getRecommendation(grade) {
+            switch(grade) {
+                case 'A': return 'Excellent choice for daily consumption';
+                case 'B': return 'Good choice, consume in moderation';
+                case 'C': return 'Moderate sugar - limit consumption';
+                case 'D': return 'High sugar - consume sparingly';
+                default: return '';
+            }
+        }
+
+        // Allow Enter key to trigger calculation
+        document.getElementById('sugarContent').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateGrade();
+            }
+        });
+    </script>
+</body>
+</html>
