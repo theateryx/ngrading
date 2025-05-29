@@ -1,6 +1,6 @@
 // =======================================================================
-// START OF CORRECTED script.js CONTENT
-// YOU MUST COPY EVERYTHING FROM THIS LINE DOWN TO "END OF CORRECTED script.js CONTENT"
+// START OF AMENDED script.js CONTENT
+// YOU MUST COPY EVERYTHING FROM THIS LINE DOWN TO "END OF AMENDED script.js CONTENT"
 // =======================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Calculate per 100ml
-        const sugarPer100ml = (totalSugar / volume) * 100;
-        const satFatPer100ml = (saturatedFat / volume) * 100;
+        // Calculate per 100ml, rounded to two decimal places for consistent comparison
+        const sugarPer100ml = parseFloat(((totalSugar / volume) * 100).toFixed(2));
+        const satFatPer100ml = parseFloat(((saturatedFat / volume) * 100).toFixed(2));
 
         let sugarGrade = '';
         let satFatGrade = '';
@@ -81,9 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const gradeIndexSatFat = grades.indexOf(satFatGrade);
 
         // If sweetener is present and sugar grade is A, it defaults to B
-        if (containsSweetener && sugarGrade === 'A') {
+        // This rule applies if the drink *would* have been an A based on nutrients
+        if (containsSweetener && sugarGrade === 'A' && satFatGrade === 'A') { // Modified: added satFatGrade === 'A' check
              nutriGrade = 'B';
-             explanation = 'Grade is B due to presence of sweetener, even with low sugar and saturated fat content.';
+             explanation = 'Grade is B due to presence of sweetener, as it would otherwise be Grade A.';
         } else {
             // The "worst" (highest index) grade determines the overall Nutri-Grade
             const finalGradeIndex = Math.max(gradeIndexSugar, gradeIndexSatFat);
@@ -103,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Nutri-Grade display
         nutriGradeOutput.className = 'nutri-grade-box grade-' + nutriGrade;
         gradeLetterDisplay.textContent = nutriGrade;
-        // Round sugar percentage to nearest whole figure
-        sugarPercentageDisplay.textContent = `${Math.round(sugarPer100ml * 100 / 100)}% Sugar`;
+        // Round sugar percentage to nearest whole figure for display
+        sugarPercentageDisplay.textContent = `${Math.round(sugarPer100ml)}% Sugar`;
         gradeExplanation.textContent = explanation;
 
         // Populate and show NIP
@@ -143,10 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
         nipSodium.textContent = `${(parseFloat(nipSodium.textContent) * per100mlFactor).toFixed(0)} mg`;
 
         // Round sugar and saturated fat percentages to the nearest whole figure for display
+        // (Note: The rounding for grading logic happens before this display part)
         const sugarPercentageForDisplay = Math.round((totalSugar / volume) * 100);
         const satFatPercentageForDisplay = Math.round((saturatedFat / volume) * 100);
-        // You might want to display these somewhere more prominent in the NIP if required by specific guidelines
-        // For now, they are part of the Nutri-Grade box.
     }
 
     exportNIPImageBtn.addEventListener('click', () => {
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         printWindow.document.write('</style></head><body>');
         printWindow.document.write('<div class="nip-panel">'); // Use the same class for styling
         printWindow.document.write(nipPanel.innerHTML); // Copy the content of the existing NIP
-          printWindow.document.write('</div></body></html>');
+        printWindow.document.write('</div></body></html>');
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
@@ -189,5 +189,5 @@ document.addEventListener('DOMContentLoaded', () => {
 }); // Closing for DOMContentLoaded
 
 // =======================================================================
-// END OF CORRECTED script.js CONTENT
+// END OF AMENDED script.js CONTENT
 // =======================================================================
