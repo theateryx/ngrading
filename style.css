@@ -1,0 +1,252 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to the top */
+    min-height: 100vh;
+    margin: 20px 0; /* Add some margin top/bottom */
+    padding: 0;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+h1 {
+    color: #004d40;
+    margin-bottom: 10px;
+    font-size: 2.2em;
+}
+
+.subtitle {
+    color: #555;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.calculator-section, .result-section, .nip-section {
+    background-color: #e8f5e9;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: #00695c;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444;
+}
+
+.input-group input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 12px;
+    border: 1px solid #c8e6c9;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-group input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.input-group input[type="checkbox"] {
+    margin-top: 5px;
+    transform: scale(1.2); /* Make checkbox slightly larger */
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.result-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nutri-grade-box {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.8em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.5s ease;
+}
+
+/* Nutri-Grade Colors */
+.grade-A { background-color: #1b5e20; } /* Dark Green */
+.grade-B { background-color: #66bb6a; } /* Light Green */
+.grade-C { background-color: #fbc02d; } /* Yellow */
+.grade-D { background-color: #d32f2f; } /* Red */
+
+.grade-letter {
+    font-size: 3em;
+    line-height: 1;
+}
+
+.sugar-percentage {
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.explanation-text {
+    font-size: 1em;
+    color: #666;
+    margin-top: 10px;
+}
+
+.nip-section {
+    background-color: #e3f2fd;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: left;
+    display: none; /* Hidden by default, shown after calculation */
+}
+
+.nip-panel {
+    border: 2px solid #90caf9;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.nip-title {
+    font-weight: bold;
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 5px;
+    color: #1976d2;
+}
+
+.nip-serving {
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #64b5f6;
+}
+
+.nip-panel table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.nip-panel th, .nip-panel td {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 0;
+    text-align: left;
+}
+
+.nip-panel th {
+    font-weight: bold;
+    color: #3f51b5;
+}
+
+.nip-panel td {
+    color: #555;
+}
+
+.nip-disclaimer {
+    font-size: 0.8em;
+    color: #777;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Specific buttons for NIP export/print */
+#exportNIPImage, #printNIP {
+    background-color: #1e88e5; /* Blue */
+    margin: 10px 10px 0 0;
+}
+
+#exportNIPImage:hover, #printNIP:hover {
+    background-color: #1565c0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    .nutri-grade-box {
+        width: 120px;
+        height: 120px;
+        font-size: 1.5em;
+    }
+
+    .grade-letter {
+        font-size: 2.5em;
+    }
+}
