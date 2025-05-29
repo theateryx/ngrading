@@ -1,48 +1,50 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark gray text */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to the top */
+    align-items: flex-start;
     min-height: 100vh;
-    margin: 20px 0; /* Add some margin top/bottom */
+    margin: 20px 0;
     padding: 0;
 }
 
 .container {
-    background-color: #ffffff;
+    background-color: #ffffff; /* White container background */
     padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     width: 100%;
     max-width: 700px;
     box-sizing: border-box;
     text-align: center;
+    border: 1px solid #ddd; /* Light gray border */
 }
 
 h1 {
-    color: #004d40;
+    color: #222; /* Darker gray for main heading */
     margin-bottom: 10px;
     font-size: 2.2em;
 }
 
 .subtitle {
-    color: #555;
+    color: #555; /* Medium gray for subtitle */
     margin-bottom: 30px;
     font-size: 1.1em;
 }
 
 .calculator-section, .result-section, .nip-section {
-    background-color: #e8f5e9;
+    background-color: #f8f8f8; /* Very light gray for sections */
     padding: 25px;
-    border-radius: 10px;
+    border-radius: 6px;
     margin-bottom: 25px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee; /* Lighter border for sections */
+    box-shadow: none; /* Remove inner shadow for cleaner look */
 }
 
 h2 {
-    color: #00695c;
+    color: #333; /* Dark gray for section headings */
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 1.6em;
@@ -65,39 +67,40 @@ h2 {
 
 .input-group input[type="number"] {
     width: calc(100% - 20px);
-    padding: 12px;
-    border: 1px solid #c8e6c9;
-    border-radius: 6px;
+    padding: 10px;
+    border: 1px solid #ccc; /* Medium gray border */
+    border-radius: 4px;
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.3s;
+    color: #333;
+    background-color: #fff;
 }
 
 .input-group input[type="number"]:focus {
-    border-color: #4CAF50;
+    border-color: #888; /* Darker gray on focus */
     outline: none;
 }
 
 .input-group input[type="checkbox"] {
     margin-top: 5px;
-    transform: scale(1.2); /* Make checkbox slightly larger */
+    transform: scale(1.2);
 }
 
-
 button {
-    background-color: #4CAF50;
+    background-color: #444; /* Dark gray button */
     color: white;
-    padding: 14px 25px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1.05em;
     margin-top: 20px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #555; /* Slightly lighter gray on hover */
     transform: translateY(-2px);
 }
 
@@ -112,8 +115,8 @@ button:active {
 }
 
 .nutri-grade-box {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -124,15 +127,17 @@ button:active {
     font-size: 1.8em;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     margin-bottom: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color 0.5s ease;
+    border: 1px solid rgba(0,0,0,0.1); /* Subtle border for definition */
 }
 
-/* Nutri-Grade Colors */
-.grade-A { background-color: #1b5e20; } /* Dark Green */
-.grade-B { background-color: #66bb6a; } /* Light Green */
-.grade-C { background-color: #fbc02d; } /* Yellow */
-.grade-D { background-color: #d32f2f; } /* Red */
+/* Nutri-Grade Colors - Monotone with subtle green accent */
+/* You can change #5cb85c to any single accent color you like, or keep it gray */
+.grade-A { background-color: #5cb85c; } /* A subtle green for "A" */
+.grade-B { background-color: #8cd68c; } /* Lighter green for "B" */
+.grade-C { background-color: #a0a0a0; } /* Medium gray for "C" */
+.grade-D { background-color: #606060; } /* Dark gray for "D" */
 
 .grade-letter {
     font-size: 3em;
@@ -151,35 +156,36 @@ button:active {
 }
 
 .nip-section {
-    background-color: #e3f2fd;
+    background-color: #f8f8f8;
     padding: 25px;
-    border-radius: 10px;
+    border-radius: 6px;
     text-align: left;
-    display: none; /* Hidden by default, shown after calculation */
+    display: none;
+    border: 1px solid #eee;
 }
 
 .nip-panel {
-    border: 2px solid #90caf9;
+    border: 1px solid #bbb; /* Slightly darker gray border for NIP */
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     margin-bottom: 20px;
 }
 
 .nip-title {
     font-weight: bold;
-    font-size: 1.4em;
+    font-size: 1.3em;
     text-align: center;
     margin-bottom: 5px;
-    color: #1976d2;
+    color: #333; /* Dark gray */
 }
 
 .nip-serving {
-    font-size: 0.9em;
+    font-size: 0.85em;
     text-align: center;
     margin-bottom: 15px;
-    color: #64b5f6;
+    color: #666; /* Medium gray */
 }
 
 .nip-panel table {
@@ -189,14 +195,15 @@ button:active {
 }
 
 .nip-panel th, .nip-panel td {
-    border-bottom: 1px solid #e0e0e0;
-    padding: 10px 0;
+    border-bottom: 1px solid #eee; /* Light gray border for table rows */
+    padding: 8px 0;
     text-align: left;
+    font-size: 0.9em;
 }
 
 .nip-panel th {
     font-weight: bold;
-    color: #3f51b5;
+    color: #444;
 }
 
 .nip-panel td {
@@ -204,26 +211,26 @@ button:active {
 }
 
 .nip-disclaimer {
-    font-size: 0.8em;
-    color: #777;
+    font-size: 0.75em;
+    color: #888; /* Lighter gray for disclaimer */
     text-align: center;
     margin-top: 15px;
 }
 
 /* Specific buttons for NIP export/print */
 #exportNIPImage, #printNIP {
-    background-color: #1e88e5; /* Blue */
+    background-color: #666; /* Medium gray for export/print buttons */
     margin: 10px 10px 0 0;
 }
 
 #exportNIPImage:hover, #printNIP:hover {
-    background-color: #1565c0;
+    background-color: #777;
 }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
     .container {
-        padding: 20px;
+        padding: 15px;
         margin: 10px;
     }
 
@@ -236,17 +243,17 @@ button:active {
     }
 
     button {
-        padding: 12px 20px;
-        font-size: 1em;
+        padding: 10px 18px;
+        font-size: 0.95em;
     }
 
     .nutri-grade-box {
-        width: 120px;
-        height: 120px;
-        font-size: 1.5em;
+        width: 100px;
+        height: 100px;
+        font-size: 1.4em;
     }
 
     .grade-letter {
-        font-size: 2.5em;
+        font-size: 2.2em;
     }
 }
