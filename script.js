@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         printWindow.document.write('</style></head><body>');
         printWindow.document.write('<div class="nip-panel">'); // Use the same class for styling
         printWindow.document.write(nipPanel.innerHTML); // Copy the content of the existing NIP
-        printWindow.document.write('</div></body></html>');
+          printWindow.document.write('</div></body></html>');
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
