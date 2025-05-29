@@ -1,20 +1,27 @@
-// =======================================================================
-// START OF AMENDED script.js CONTENT
-// YOU MUST COPY EVERYTHING FROM THIS LINE DOWN TO "END OF AMENDED script.js CONTENT"
-// =======================================================================
-
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Inputs for Nutri-Grade Calculation ---
     const sugarInput = document.getElementById('sugarInput');
     const satFatInput = document.getElementById('satFatInput');
     const volumeInput = document.getElementById('volumeInput');
     const hasSweetener = document.getElementById('hasSweetener');
+
+    // --- New Inputs for Detailed NIP ---
+    const energyInput = document.getElementById('energyInput');
+    const proteinInput = document.getElementById('proteinInput');
+    const totalFatInput = document.getElementById('totalFatInput');
+    const transFatInput = document.getElementById('transFatInput');
+    const carbInput = document.getElementById('carbInput');
+    const fibreInput = document.getElementById('fibreInput');
+    const sodiumInput = document.getElementById('sodiumInput');
+
+    // --- Output Elements ---
     const calculateBtn = document.getElementById('calculateBtn');
     const nutriGradeOutput = document.getElementById('nutriGradeOutput');
     const gradeLetterDisplay = nutriGradeOutput.querySelector('.grade-letter');
     const sugarPercentageDisplay = nutriGradeOutput.querySelector('.sugar-percentage');
     const gradeExplanation = document.getElementById('gradeExplanation');
 
-    // NIP elements
+    // --- NIP Elements ---
     const nipSection = document.getElementById('nipSection');
     const nipPanel = document.getElementById('nipPanel');
     const nipEnergy = document.getElementById('nipEnergy');
@@ -23,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nipSatFat = document.getElementById('nipSatFat');
     const nipTransFat = document.getElementById('nipTransFat');
     const nipCarbohydrate = document.getElementById('nipCarbohydrate');
-    const nipTotalSugar = document.getElementById('nipTotalSugar');
+    const nipTotalSugar = document.getElementById('nipTotalSugar'); // This is the total sugar from above
     const nipFibre = document.getElementById('nipFibre');
     const nipSodium = document.getElementById('nipSodium');
     const exportNIPImageBtn = document.getElementById('exportNIPImage');
@@ -33,18 +40,37 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateBtn.addEventListener('click', calculateNutriGrade);
 
     function calculateNutriGrade() {
+        // Get values for Nutri-Grade calculation
         const totalSugar = parseFloat(sugarInput.value);
         const saturatedFat = parseFloat(satFatInput.value);
         const volume = parseFloat(volumeInput.value);
         const containsSweetener = hasSweetener.checked;
 
-        // Input validation
-        if (isNaN(totalSugar) || isNaN(saturatedFat) || isNaN(volume) || totalSugar < 0 || saturatedFat < 0 || volume <= 0) {
+        // Get values for Detailed NIP
+        const totalEnergy = parseFloat(energyInput.value);
+        const totalProtein = parseFloat(proteinInput.value);
+        const totalFat = parseFloat(totalFatInput.value);
+        const transFat = parseFloat(transFatInput.value);
+        const totalCarbohydrate = parseFloat(carbInput.value);
+        const dietaryFibre = parseFloat(fibreInput.value);
+        const totalSodium = parseFloat(sodiumInput.value);
+
+
+        // Input validation for all fields
+        if (isNaN(totalSugar) || isNaN(saturatedFat) || isNaN(volume) || totalSugar < 0 || saturatedFat < 0 || volume <= 0 ||
+            isNaN(totalEnergy) || totalEnergy < 0 ||
+            isNaN(totalProtein) || totalProtein < 0 ||
+            isNaN(totalFat) || totalFat < 0 ||
+            isNaN(transFat) || transFat < 0 ||
+            isNaN(totalCarbohydrate) || totalCarbohydrate < 0 ||
+            isNaN(dietaryFibre) || dietaryFibre < 0 ||
+            isNaN(totalSodium) || totalSodium < 0
+        ) {
             alert('Please enter valid positive numbers for all fields.');
             return;
         }
 
-        // Calculate per 100ml, rounded to two decimal places for consistent comparison
+        // Calculate per 100ml values for Nutri-Grade (rounded to 2 decimal places for robustness)
         const sugarPer100ml = parseFloat(((totalSugar / volume) * 100).toFixed(2));
         const satFatPer100ml = parseFloat(((saturatedFat / volume) * 100).toFixed(2));
 
@@ -80,9 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const gradeIndexSugar = grades.indexOf(sugarGrade);
         const gradeIndexSatFat = grades.indexOf(satFatGrade);
 
-        // If sweetener is present and sugar grade is A, it defaults to B
-        // This rule applies if the drink *would* have been an A based on nutrients
-        if (containsSweetener && sugarGrade === 'A' && satFatGrade === 'A') { // Modified: added satFatGrade === 'A' check
+        // Sweetener rule: If beverage would be A, but contains sweetener, it becomes B.
+        if (containsSweetener && sugarGrade === 'A' && satFatGrade === 'A') {
              nutriGrade = 'B';
              explanation = 'Grade is B due to presence of sweetener, as it would otherwise be Grade A.';
         } else {
@@ -100,55 +125,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-
         // Update Nutri-Grade display
         nutriGradeOutput.className = 'nutri-grade-box grade-' + nutriGrade;
         gradeLetterDisplay.textContent = nutriGrade;
-        // Round sugar percentage to nearest whole figure for display
+        // Round sugar percentage to nearest whole figure for display on grade box
         sugarPercentageDisplay.textContent = `${Math.round(sugarPer100ml)}% Sugar`;
         gradeExplanation.textContent = explanation;
 
-        // Populate and show NIP
-        populateNIP(totalSugar, saturatedFat, volume);
+        // Populate and show NIP with actual values
+        populateNIP(totalSugar, saturatedFat, volume, totalEnergy, totalProtein, totalFat, transFat, totalCarbohydrate, dietaryFibre, totalSodium);
         nipSection.style.display = 'block'; // Show NIP section
     }
 
-    function populateNIP(totalSugar, saturatedFat, volume) {
-        // These values are placeholders. In a real-world scenario, you'd calculate
-        // these based on a detailed recipe or ingredient database.
-        // For demonstration, we'll use some simple estimations or just display the inputs.
-
+    // Function to populate the Nutritional Information Panel
+    function populateNIP(totalSugar, saturatedFat, volume, totalEnergy, totalProtein, totalFat, transFat, totalCarbohydrate, dietaryFibre, totalSodium) {
         const per100mlFactor = 100 / volume;
 
-        // Display actual input values per serving (not per 100ml for the main display)
-        // and per 100ml for NIP values
-        nipEnergy.textContent = `${(Math.random() * 50 + 20).toFixed(0)} kcal`; // Placeholder
-        nipProtein.textContent = `${(Math.random() * 5).toFixed(1)} g`; // Placeholder
-        nipTotalFat.textContent = `${(saturatedFat + Math.random() * 0.5).toFixed(1)} g`; // Placeholder, total fat >= sat fat
-        nipSatFat.textContent = `${saturatedFat.toFixed(1)} g`;
-        nipTransFat.textContent = `${(Math.random() * 0.1).toFixed(1)} g`; // Placeholder, usually very low
-        nipCarbohydrate.textContent = `${(totalSugar + Math.random() * 2).toFixed(1)} g`; // Placeholder, carb >= sugar
-        nipTotalSugar.textContent = `${totalSugar.toFixed(1)} g`;
-        nipFibre.textContent = `${(Math.random() * 2).toFixed(1)} g`; // Placeholder
-        nipSodium.textContent = `${(Math.random() * 50 + 5).toFixed(0)} mg`; // Placeholder
-
-        // Adjust NIP for 'Per 100ml Serving'
-        nipEnergy.textContent = `${(parseFloat(nipEnergy.textContent) * per100mlFactor).toFixed(0)} kcal`;
-        nipProtein.textContent = `${(parseFloat(nipProtein.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipTotalFat.textContent = `${(parseFloat(nipTotalFat.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipSatFat.textContent = `${(parseFloat(nipSatFat.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipTransFat.textContent = `${(parseFloat(nipTransFat.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipCarbohydrate.textContent = `${(parseFloat(nipCarbohydrate.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipTotalSugar.textContent = `${(parseFloat(nipTotalSugar.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipFibre.textContent = `${(parseFloat(nipFibre.textContent) * per100mlFactor).toFixed(1)} g`;
-        nipSodium.textContent = `${(parseFloat(nipSodium.textContent) * per100mlFactor).toFixed(0)} mg`;
-
-        // Round sugar and saturated fat percentages to the nearest whole figure for display
-        // (Note: The rounding for grading logic happens before this display part)
-        const sugarPercentageForDisplay = Math.round((totalSugar / volume) * 100);
-        const satFatPercentageForDisplay = Math.round((saturatedFat / volume) * 100);
+        // Calculate and display per 100ml values for NIP
+        // Energy typically rounded to whole kcal (0 decimal places)
+        nipEnergy.textContent = `${(totalEnergy * per100mlFactor).toFixed(0)} kcal`;
+        // Other nutrients typically rounded to one decimal place
+        nipProtein.textContent = `${(totalProtein * per100mlFactor).toFixed(1)} g`;
+        nipTotalFat.textContent = `${(totalFat * per100mlFactor).toFixed(1)} g`;
+        nipSatFat.textContent = `${(saturatedFat * per100mlFactor).toFixed(1)} g`;
+        nipTransFat.textContent = `${(transFat * per100mlFactor).toFixed(1)} g`;
+        nipCarbohydrate.textContent = `${(totalCarbohydrate * per100mlFactor).toFixed(1)} g`;
+        nipTotalSugar.textContent = `${(totalSugar * per100mlFactor).toFixed(1)} g`;
+        nipFibre.textContent = `${(dietaryFibre * per100mlFactor).toFixed(1)} g`;
+        // Sodium typically rounded to whole mg (0 decimal places)
+        nipSodium.textContent = `${(totalSodium * per100mlFactor).toFixed(0)} mg`;
     }
 
+    // Export NIP as Image functionality
     exportNIPImageBtn.addEventListener('click', () => {
         html2canvas(nipPanel, {
             scale: 2, // Increase resolution for better quality
@@ -161,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Print NIP functionality
     printNIPBtn.addEventListener('click', () => {
         const printWindow = window.open('', '', 'height=600,width=800');
         printWindow.document.write('<html><head><title>Nutritional Information Panel</title>');
@@ -187,7 +196,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 }); // Closing for DOMContentLoaded
-
-// =======================================================================
-// END OF AMENDED script.js CONTENT
-// =======================================================================
