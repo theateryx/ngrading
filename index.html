@@ -3,823 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Nutri-Grade Recipe Calculator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
-            color: #e5e5e5;
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #333 0%, #444 100%);
-            color: #f5f5f5;
-            padding: 40px;
-            text-align: center;
-            border-bottom: 1px solid #555;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            font-weight: 300;
-            letter-spacing: -1px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.8;
-            font-weight: 300;
-        }
-
-        .main-content {
-            padding: 40px;
-        }
-
-        .input-section {
-            background: #1f1f1f;
-            border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 30px;
-            border: 1px solid #333;
-        }
-
-        .section-title {
-            font-size: 1.4em;
-            margin-bottom: 25px;
-            color: #f5f5f5;
-            font-weight: 300;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 400;
-            color: #b5b5b5;
-            font-size: 0.95em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 15px 18px;
-            border: 1px solid #444;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #2a2a2a;
-            color: #e5e5e5;
-            font-weight: 300;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #666;
-            background: #333;
-            box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.1);
-        }
-
-        input::placeholder {
-            color: #777;
-            font-weight: 300;
-        }
-
-        .calculate-btn {
-            background: linear-gradient(135deg, #555 0%, #666 100%);
-            color: #f5f5f5;
-            padding: 18px 45px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 400;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 30px auto 0;
-            min-width: 220px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid #777;
-        }
-
-        .calculate-btn:hover {
-            background: linear-gradient(135deg, #666 0%, #777 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .calculate-btn:active {
-            transform: translateY(0);
-        }
-
-        .results {
-            margin-top: 30px;
-            padding: 35px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            transition: all 0.5s ease;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .results.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .grade-a { 
-            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
-            border-color: #666;
-        }
-        .grade-b { 
-            background: linear-gradient(135deg, #333 0%, #444 100%);
-            border-color: #777;
-        }
-        .grade-c { 
-            background: linear-gradient(135deg, #444 0%, #555 100%);
-            border-color: #888;
-        }
-        .grade-d { 
-            background: linear-gradient(135deg, #555 0%, #666 100%);
-            border-color: #999;
-        }
-
-        .grade-display {
-            font-size: 4.5em;
-            font-weight: 200;
-            color: #f5f5f5;
-            text-align: center;
-            margin-bottom: 15px;
-            letter-spacing: -2px;
-        }
-
-        .grade-with-percentage {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .grade-letter {
-            font-size: 4.5em;
-            font-weight: 200;
-        }
-
-        .sugar-percentage {
-            font-size: 2.8em;
-            font-weight: 300;
-            opacity: 0.9;
-        }
-
-        .grade-description {
-            color: #b5b5b5;
-            font-size: 1.3em;
-            font-weight: 300;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .nutrition-info {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #444;
-        }
-
-        .nutrition-info h3 {
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            color: #f5f5f5;
-            font-weight: 300;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .info-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 18px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .info-item strong {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 400;
-        }
-
-        .info-value {
-            font-size: 1.2em;
-            color: #f5f5f5;
-            font-weight: 300;
-        }
-
-        .system-info {
-            background: #1a1a1a;
-            color: #b5b5b5;
-            padding: 35px;
-            margin-top: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
-        }
-
-        .system-info h3 {
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            color: #f5f5f5;
-            font-weight: 300;
-        }
-
-        .grade-table {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .grade-item {
-            text-align: center;
-            padding: 20px 15px;
-            border-radius: 8px;
-            font-weight: 400;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            transition: all 0.3s ease;
-        }
-
-        .grade-item:hover {
-            background: #333;
-            transform: translateY(-2px);
-        }
-
-        .grade-item .grade-letter {
-            font-size: 1.8em;
-            font-weight: 200;
-            margin-bottom: 8px;
-            color: #f5f5f5;
-        }
-
-        .grade-item small {
-            font-size: 0.85em;
-            color: #999;
-            display: block;
-            margin-top: 5px;
-        }
-
-        .nutrition-panel {
-            background: white;
-            color: black;
-            border: 2px solid black;
-            border-radius: 0;
-            padding: 0;
-            margin: 30px 0;
-            font-family: Arial, sans-serif;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .panel-header {
-            background: black;
-            color: white;
-            padding: 8px 12px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .panel-content {
-            padding: 12px;
-        }
-
-        .serving-info {
-            border-bottom: 8px solid black;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-        }
-
-        .serving-size {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .servings-per-container {
-            font-size: 12px;
-            margin-top: 2px;
-        }
-
-        .calories-section {
-            border-bottom: 4px solid black;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-        }
-
-        .calories-main {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .daily-value-header {
-            font-size: 12px;
-            font-weight: bold;
-            text-align: right;
-            border-bottom: 1px solid black;
-            padding-bottom: 2px;
-            margin-bottom: 4px;
-        }
-
-        .nutrient-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 2px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 2px;
-        }
-
-        .nutrient-row.bold {
-            font-weight: bold;
-            border-bottom: 1px solid black;
-        }
-
-        .nutrient-row.indent {
-            padding-left: 16px;
-        }
-
-        .panel-footer {
-            font-size: 10px;
-            border-top: 4px solid black;
-            padding-top: 4px;
-            margin-top: 8px;
-        }
-
-        .download-btn {
-            background: #333;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9em;
-            cursor: pointer;
-            margin: 15px auto;
-            display: block;
-            transition: all 0.3s ease;
-        }
-
-        .criteria-section {
-            background: #1f1f1f;
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-            border: 1px solid #333;
-        }
-
-        .criteria-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .criteria-item {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .criteria-item h4 {
-            color: #f5f5f5;
-            margin-bottom: 10px;
-            font-weight: 400;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            
-            .input-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .grade-letter {
-                font-size: 3.5em;
-            }
-
-            .sugar-percentage {
-                font-size: 2.2em;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-        }
-    </style>
+    <title>Singapore Nutri-Grade Calculator for Beverages</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🍹 Nutri-Grade Recipe Calculator Version 1</h1>
-            <p>Calculate beverage grades based on complete nutritional profile</p>
+        <h1>Singapore Nutri-Grade Calculator</h1>
+        <p class="subtitle">For Freshly Prepared Beverages</p>
+
+        <div class="calculator-section">
+            <h2>Beverage Details</h2>
+            <div class="input-group">
+                <label for="sugarInput">Total Sugar (grams):</label>
+                <input type="number" id="sugarInput" min="0" step="0.1" placeholder="e.g., 5.5">
+            </div>
+            <div class="input-group">
+                <label for="satFatInput">Saturated Fat (grams):</label>
+                <input type="number" id="satFatInput" min="0" step="0.1" placeholder="e.g., 1.2">
+            </div>
+            <div class="input-group">
+                <label for="volumeInput">Beverage Volume (ml):</label>
+                <input type="number" id="volumeInput" min="1" step="1" placeholder="e.g., 250">
+            </div>
+            <div class="input-group">
+                <label for="hasSweetener">Contains Sweetener (other than natural sugar)?</label>
+                <input type="checkbox" id="hasSweetener">
+            </div>
+            <button id="calculateBtn">Calculate Nutri-Grade</button>
         </div>
 
-        <div class="main-content">
-            <div class="input-section">
-                <h2 class="section-title">Recipe Information</h2>
-                
-                <div class="input-group">
-                    <label for="beverageName">Beverage Name</label>
-                    <input type="text" id="beverageName" placeholder="e.g., Iced Latte">
-                </div>
-
-                <div class="input-grid">
-                    <div class="input-group">
-                        <label for="totalVolume">Total Volume (ml)</label>
-                        <input type="number" id="totalVolume" step="1" min="1" placeholder="e.g., 500">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalKcal">Total Calories (kcal)</label>
-                        <input type="number" id="totalKcal" step="1" min="0" placeholder="e.g., 150">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalSugar">Total Sugar (g)</label>
-                        <input type="number" id="totalSugar" step="0.1" min="0" placeholder="e.g., 25.5">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalSatFat">Total Saturated Fat (g)</label>
-                        <input type="number" id="totalSatFat" step="0.1" min="0" placeholder="e.g., 2.5">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalProtein">Total Protein (g)</label>
-                        <input type="number" id="totalProtein" step="0.1" min="0" placeholder="e.g., 8.0">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalFat">Total Fat (g)</label>
-                        <input type="number" id="totalFat" step="0.1" min="0" placeholder="e.g., 3.5">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="totalCarbs">Total Carbohydrates (g)</label>
-                        <input type="number" id="totalCarbs" step="0.1" min="0" placeholder="e.g., 28.0">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="servingSize">Serving Size (ml)</label>
-                        <input type="number" id="servingSizeInput" step="1" min="1" placeholder="e.g., 240" value="240">
-                    </div>
-                </div>
-
-                <button class="calculate-btn" onclick="calculateNutriGrade()">Calculate Nutri-Grade & Generate Panel</button>
+        <div class="result-section">
+            <h2>Nutri-Grade Result</h2>
+            <div id="nutriGradeOutput" class="nutri-grade-box">
+                <div class="grade-letter">?</div>
+                <div class="sugar-percentage">?% Sugar</div>
             </div>
+            <p id="gradeExplanation" class="explanation-text"></p>
+        </div>
 
-            <div id="results" class="results">
-                <!-- Results will be populated here -->
+        <div class="nip-section" id="nipSection">
+            <h2>Nutritional Information Panel (NIP)</h2>
+            <div class="nip-panel" id="nipPanel">
+                <p class="nip-title">NUTRITION INFORMATION</p>
+                <p class="nip-serving">Per 100ml Serving</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nutrient</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Energy</td>
+                            <td id="nipEnergy">-- kcal</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                            <td id="nipProtein">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>Total Fat</td>
+                            <td id="nipTotalFat">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Saturated Fat</td>
+                            <td id="nipSatFat">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Trans Fat</td>
+                            <td id="nipTransFat">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>Carbohydrate</td>
+                            <td id="nipCarbohydrate">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Total Sugar</td>
+                            <td id="nipTotalSugar">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>Dietary Fibre</td>
+                            <td id="nipFibre">-- g</td>
+                        </tr>
+                        <tr>
+                            <td>Sodium</td>
+                            <td id="nipSodium">-- mg</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="nip-disclaimer">
+                    *Nutri-Grade is based on the default preparation of this beverage.<br>
+                    Values are calculated estimates based on input and should be verified for official labelling.
+                </p>
             </div>
-
-            <div class="criteria-section">
-                <h2 class="section-title">Nutri-Grade Criteria</h2>
-                <p style="margin-bottom: 20px; color: #b5b5b5;">Grades are determined by both sugar and saturated fat content per 100ml. The higher grade applies when either threshold is exceeded.</p>
-                
-                <div class="criteria-grid">
-                    <div class="criteria-item">
-                        <h4>Sugar Content Thresholds</h4>
-                        <p style="color: #999; font-size: 0.9em;">
-                            Grade A: ≤ 1g per 100ml<br>
-                            Grade B: 1.1-5g per 100ml<br>
-                            Grade C: 5.1-10g per 100ml<br>
-                            Grade D: > 10g per 100ml
-                        </p>
-                    </div>
-                    <div class="criteria-item">
-                        <h4>Saturated Fat Content Thresholds</h4>
-                        <p style="color: #999; font-size: 0.9em;">
-                            Grade A: ≤ 1.2g per 100ml<br>
-                            Grade B: 1.3-2.8g per 100ml<br>
-                            Grade C: 2.9-4.0g per 100ml<br>
-                            Grade D: > 4.0g per 100ml
-                        </p>
-                    </div>
-                </div>
-
-                <div class="nutrition-panel" id="nutritionPanel" style="display: none;">
-                    <div class="panel-header">
-                        Nutrition Facts
-                    </div>
-                    <div class="panel-content">
-                        <div class="serving-info">
-                            <div class="serving-size">Serving size <span id="servingSize">1 cup (240ml)</span></div>
-                            <div class="servings-per-container">Servings per container <span id="servingsPerContainer">about 2</span></div>
-                        </div>
-                        
-                        <div class="calories-section">
-                            <div class="calories-main">Calories <span id="caloriesPerServing">150</span></div>
-                        </div>
-
-                        <div class="daily-value-header">% Daily Value*</div>
-                        
-                        <div class="nutrient-row bold">
-                            <span><strong>Total Fat</strong> <span id="totalFatServing">2.5g</span></span>
-                            <span><strong id="totalFatDV">3%</strong></span>
-                        </div>
-                        
-                        <div class="nutrient-row indent">
-                            <span>Saturated Fat <span id="satFatServing">2.5g</span></span>
-                            <span><strong id="satFatDV">13%</strong></span>
-                        </div>
-                        
-                        <div class="nutrient-row">
-                            <span><strong>Total Carbohydrate</strong> <span id="totalCarbServing">25g</span></span>
-                            <span><strong id="totalCarbDV">9%</strong></span>
-                        </div>
-                        
-                        <div class="nutrient-row indent">
-                            <span>Total Sugars <span id="sugarServing">25g</span></span>
-                            <span></span>
-                        </div>
-                        
-                        <div class="nutrient-row">
-                            <span><strong>Protein</strong> <span id="proteinServing">8g</span></span>
-                            <span></span>
-                        </div>
-
-                        <div class="panel-footer">
-                            *The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.
-                        </div>
-                    </div>
-                </div>
-
-                <button class="download-btn" id="downloadBtn" onclick="downloadPanel()" style="display: none;">
-                    Download Nutrition Panel
-                </button>
-            </div>
-
-            <div class="system-info">
-                <h3>Nutri-Grade System</h3>
-                <p>The Nutri-Grade labelling system evaluates beverages based on sugar and saturated fat content to help consumers make informed choices. The final grade is determined by whichever nutrient scores the higher (worse) grade.</p>
-                
-                <div class="grade-table">
-                    <div class="grade-item">
-                        <div class="grade-letter">A</div>
-                        <div>Healthiest Choice</div>
-                        <small>Lowest sugar & sat fat</small>
-                    </div>
-                    <div class="grade-item">
-                        <div class="grade-letter">B</div>
-                        <div>Healthier Choice</div>
-                        <small>Low-medium levels</small>
-                    </div>
-                    <div class="grade-item">
-                        <div class="grade-letter">C</div>
-                        <div>Medium Choice</div>
-                        <small>Moderate levels</small>
-                    </div>
-                    <div class="grade-item">
-                        <div class="grade-letter">D</div>
-                        <div>Higher Levels</div>
-                        <small>High sugar or sat fat</small>
-                    </div>
-                </div>
-            </div>
+            <button id="exportNIPImage">Export NIP as Image</button>
+            <button id="printNIP">Print NIP</button>
         </div>
     </div>
-
-    <script>
-        function calculateNutriGrade() {
-            const beverageName = document.getElementById('beverageName').value || 'Your beverage';
-            const totalVolume = parseFloat(document.getElementById('totalVolume').value);
-            const totalKcal = parseFloat(document.getElementById('totalKcal').value);
-            const totalSugar = parseFloat(document.getElementById('totalSugar').value);
-            const totalSatFat = parseFloat(document.getElementById('totalSatFat').value);
-            const totalProtein = parseFloat(document.getElementById('totalProtein').value) || 0;
-            const totalFat = parseFloat(document.getElementById('totalFat').value) || 0;
-            const totalCarbs = parseFloat(document.getElementById('totalCarbs').value) || 0;
-            const servingSizeValue = parseFloat(document.getElementById('servingSizeInput').value) || 240;
-            
-            // Validation
-            if (isNaN(totalVolume) || totalVolume <= 0) {
-                alert('Please enter a valid total volume');
-                return;
-            }
-            if (isNaN(totalKcal) || totalKcal < 0) {
-                alert('Please enter valid total calories');
-                return;
-            }
-            if (isNaN(totalSugar) || totalSugar < 0) {
-                alert('Please enter valid total sugar content');
-                return;
-            }
-            if (isNaN(totalSatFat) || totalSatFat < 0) {
-                alert('Please enter valid total saturated fat content');
-                return;
-            }
-
-            // Calculate per 100ml values
-            const sugarPer100ml = (totalSugar * 100) / totalVolume;
-            const satFatPer100ml = (totalSatFat * 100) / totalVolume;
-            const kcalPer100ml = (totalKcal * 100) / totalVolume;
-
-            // Determine grades for each component
-            const sugarGrade = getSugarGrade(sugarPer100ml);
-            const satFatGrade = getSatFatGrade(satFatPer100ml);
-
-            // Final grade is the worse (higher) of the two
-            const finalGrade = sugarGrade > satFatGrade ? sugarGrade : satFatGrade;
-            const gradeLetters = ['A', 'B', 'C', 'D'];
-            const gradeLetter = gradeLetters[finalGrade];
-            
-            const gradeClass = `grade-${gradeLetter.toLowerCase()}`;
-            const description = getGradeDescription(gradeLetter);
-
-            const resultsDiv = document.getElementById('results');
-            
-            resultsDiv.className = `results ${gradeClass}`;
-            resultsDiv.innerHTML = `
-                <div class="grade-display">
-                    <div class="grade-with-percentage">
-                        <span class="grade-letter">${gradeLetter}</span>
-                        <span class="sugar-percentage">${Math.round(sugarPer100ml)}%</span>
-                    </div>
-                </div>
-                <div class="grade-description">${description}</div>
-                <div class="nutrition-info">
-                    <h3>${beverageName}</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <strong>Volume</strong>
-                            <div class="info-value">${totalVolume}ml</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Calories per 100ml</strong>
-                            <div class="info-value">${kcalPer100ml.toFixed(1)} kcal</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Sugar per 100ml</strong>
-                            <div class="info-value">${sugarPer100ml.toFixed(1)}g</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Sat Fat per 100ml</strong>
-                            <div class="info-value">${satFatPer100ml.toFixed(1)}g</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Total Calories</strong>
-                            <div class="info-value">${totalKcal} kcal</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Total Sugar</strong>
-                            <div class="info-value">${totalSugar}g</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Total Sat Fat</strong>
-                            <div class="info-value">${totalSatFat}g</div>
-                        </div>
-                        <div class="info-item">
-                            <strong>Determining Factor</strong>
-                            <div class="info-value">${getDeterminingFactor(sugarGrade, satFatGrade)}</div>
-                        </div>
-                    </div>
-
-                    <div class="nutrition-panel" id="nutritionPanel">
-                        <div class="panel-header">
-                            Nutrition Facts
-                        </div>
-                        <div class="panel-content">
-                            <div class="serving-info">
-                                <div class="serving-size">Serving size 1 cup (${servingSizeValue}ml)</div>
-                                <div class="servings-per-container">Servings per container about ${Math.round(totalVolume / servingSizeValue)}</div>
-                            </div>
-                            
-                            <div class="calories-section">
-                                <div class="calories-main">Calories ${Math.round((totalKcal * servingSizeValue) / totalVolume)}</div>
-                            </div>
-
-                            <div class="daily-value-header">% Daily Value*</div>
-                            
-                            <div class="nutrient-row bold">
-                                <span><strong>Total Fat</strong> ${((totalFat * servingSizeValue) / totalVolume).toFixed(1)}g</span>
-                                <span><strong>${Math.round(((totalFat * servingSizeValue) / totalVolume) / 65 * 100)}%</strong></span>
-                            </div>
-                            
-                            <div class="nutrient-row indent">
-                                <span>Saturated Fat ${((totalSatFat * servingSizeValue) / totalVolume).toFixed(1)}g</span>
-                                <span><strong>${Math.round(((totalSatFat * servingSizeValue) / totalVolume) / 20 * 100)}%</strong></span>
-                            </div>
-                            
-                            <div class="nutrient-row">
-                                <span><strong>Total Carbohydrate</strong> ${((totalCarbs * servingSizeValue) / totalVolume).toFixed(1)}g</span>
-                                <span><strong>${Math.round(((totalCarbs * servingSizeValue) / totalVolume) / 300 * 100)}%</strong></span>
-                            </div>
-                            
-                            <div class="nutrient-row indent">
-                                <span>Total Sugars ${((totalSugar * servingSizeValue) / totalVolume).toFixed(1)}g</span>
-                                <span></span>
-                            </div>
-                            
-                            <div class="nutrient-row">
-                                <span><strong>Protein</strong> ${((totalProtein * servingSizeValue) / totalVolume).toFixed(1)}g</span>
-                                <span></span>
-                            </div>
-
-                            <div class="panel-footer">
-                                *The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="download-btn" onclick="downloadPanel()">
-                        Download Nutrition Panel
-                    </button>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                resultsDiv.classList.add('show');
-            }, 100);
-        }
-
-        function getSugarGrade(sugarPer100ml) {
-            if (sugarPer100ml <= 1) return 0; // Grade A
-            if (sugarPer100ml <= 5) return 1; // Grade B
-            if (sugarPer100ml <= 10) return 2; // Grade C
-            return 3; // Grade D
-        }
-
-        function getSatFatGrade(satFatPer100ml) {
-            if (satFatPer100ml <= 1.2) return 0; // Grade A
-            if (satFatPer100ml <= 2.8) return 1; // Grade B
-            if (satFatPer100ml <= 4.0) return 2; // Grade C
-            return 3; // Grade D
-        }
-
-        function getGradeDescription(grade) {
-            switch(grade) {
-                case 'A': return 'Healthiest Choice - Low sugar and saturated fat';
-                case 'B': return 'Healthier Choice - Moderate sugar and saturated fat';
-                case 'C': return 'Medium Choice - Higher sugar or saturated fat';
-                case 'D': return 'High sugar or saturated fat content';
-                default: return '';
-            }
-        }
-
-        function getDeterminingFactor(sugarGrade, satFatGrade) {
-            if (sugarGrade > satFatGrade) return 'Sugar content';
-            if (satFatGrade > sugarGrade) return 'Saturated fat content';
-            return 'Both sugar and saturated fat';
-        }
-
-        // Allow Enter key to trigger calculation
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculateNutriGrade();
-            }
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
