@@ -1,3 +1,8 @@
+// =======================================================================
+// START OF CORRECTED script.js CONTENT
+// YOU MUST COPY EVERYTHING FROM THIS LINE DOWN TO "END OF CORRECTED script.js CONTENT"
+// =======================================================================
+
 document.addEventListener('DOMContentLoaded', () => {
     const sugarInput = document.getElementById('sugarInput');
     const satFatInput = document.getElementById('satFatInput');
@@ -182,3 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 }); // Closing for DOMContentLoaded
+
+// =======================================================================
+// END OF CORRECTED script.js CONTENT
+// =======================================================================
